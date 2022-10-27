@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class DaoEmployee {
 
-    public ArrayList<Employee> listarEmpleados(){
+    public ArrayList<Employee> listarEmpleados() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -16,13 +16,12 @@ public class DaoEmployee {
 
         String url = "jdbc:mysql://localhost:3306/hr";
         ArrayList<Employee> lista = new ArrayList<>();
-        try {
-            Connection connection = DriverManager.getConnection(url, "root", "root");
-            String sql = "select * from employees";
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        String sql = "select * from employees";
 
-            while (rs.next()){
+        try (Connection connection = DriverManager.getConnection(url, "root", "root");
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql);) {
+            while (rs.next()) {
                 Employee employee = new Employee();
                 employee.setEmployeeId(rs.getInt(1));
                 employee.setFirstName(rs.getString(2));
@@ -36,7 +35,7 @@ public class DaoEmployee {
         return lista;
     }
 
-    public ArrayList<Employee>  listarEmpleadosOrdenadosSalario(){
+    public ArrayList<Employee> listarEmpleadosOrdenadosSalario() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -45,13 +44,12 @@ public class DaoEmployee {
 
         String url = "jdbc:mysql://localhost:3306/hr";
         ArrayList<Employee> lista = new ArrayList<>();
-        try {
-            Connection connection = DriverManager.getConnection(url, "root", "root");
-            String sql = "select * from employees order by salary DESC";
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        String sql = "select * from employees order by salary DESC";
+        try (Connection connection = DriverManager.getConnection(url, "root", "root");
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql);) {
 
-            while (rs.next()){
+            while (rs.next()) {
                 Employee employee = new Employee();
                 employee.setEmployeeId(rs.getInt(1));
                 employee.setFirstName(rs.getString(2));
